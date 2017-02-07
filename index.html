@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>无缝滚动</title>
+	<style type="text/css" media="screen">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			margin: 0;
+		}
+		ul,li {
+			margin: 0;
+			padding: 0;
+		}
+		li {
+			list-style: none;
+		}
+		.focus-images {
+			width: 80%;
+			height: 410px;
+			overflow: hidden;
+			margin: 0 auto;
+		}
+		.img-num {
+			position: absolute;
+			z-index: 20;
+			top: 50%;
+			left: 65%;
+		}
+		.img-num li {
+			width: 15px;
+			height: 15px;
+			float: left;
+			cursor: pointer;
+			margin-right: 10px;
+			border-radius: 50%;
+			background-color: #fff;
+			opacity: 0.8;
+		}
+		.img-list li {
+			position: absolute;
+			left: 180px;
+			top: 0;
+		}
+		.imgs {
+			width: 990px;
+			margin: 0 auto;
+		}
+		.img-num .hover {
+			background-color: orange;
+			opacity: 1;
+		}
+	</style>
+</head>
+<body>
+	<div class="focus-images" id="focus-images">
+		<ul class="img-num">
+			<li class="hover"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<ul class="img-list">
+			<li style="background-color: #6a72a1">
+				<div class="imgs">
+					<img src="images/focus_1.png">
+				</div>
+			</li>
+			<li style="background-color: #a43a3a">
+				<div class="imgs">
+					<img src="images/focus_2.png">
+				</div>
+			</li>
+			<li style="background-color: #7B6AA1">
+				<div class="imgs">
+					<img src="images/focus_3.png">
+				</div>
+			</li>
+			<li style="background-color: #4d8bb0">
+				<div class="imgs">
+					<img src="images/focus_4.png">
+				</div>
+			</li>
+		</ul>
+	</div>
+	<script type="text/javascript" src="../jquery-1.9.1/jquery.js"></script>
+	<script type="text/javascript">
+		(function(){
+			var imgList = $('.img-list');
+			var liArr = $('.img-list>li');
+			var numArr = $('.img-num>li');
+			var index = 0;
+			var autoplay = null;
+			var dealy = 3000;
+
+			numArr.on('click',function(){
+				var thisNum = $(this).index();
+				imgList.children('li').eq(thisNum).fadeIn(800).siblings().fadeOut(800);
+				$(this).addClass('hover').siblings().removeClass('hover');
+			});
+
+			function showIt(){
+				imgList.children('li').eq(index).fadeIn(800).siblings().fadeOut(800);
+				numArr.eq(index).addClass('hover').siblings().removeClass('hover');
+			}
+
+			function playIt(){
+				autoplay = setInterval(function(){
+				if(index < liArr.length-1){
+					index ++;
+				}else{
+					index = 0;
+				}
+					showIt();
+				},dealy);
+			}
+
+			function stopIt(){
+				clearInterval(autoplay);
+			}
+
+			var focusImages = document.getElementById('focus-images');
+			focusImages.onmouseover = stopIt;
+			focusImages.onmouseout = playIt;
+			playIt();
+		})();
+	</script>
+</body>
+</html>
